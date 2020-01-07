@@ -1,0 +1,75 @@
+apply plugin: 'com.android.application'
+
+
+def getPropertyString(String property){
+    Properties properties = new Properties();
+    properties.load(new FileInputStream("$projectDir/../../../credentials/campout.properties"));
+    return String.format("\"%s\"",properties.getProperty(property));
+}
+
+android {
+    compileSdkVersion 29
+    buildToolsVersion "29.0.2"
+    defaultConfig {
+        applicationId "com.projects.campout.J"
+        minSdkVersion 14
+        targetSdkVersion 29
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        buildConfigField "String", "BASE_URL", '"https://api.foursquare.com/v2/venues/"'
+        buildConfigField "String", "CLIENT_ID", getPropertyString("client_id")
+        buildConfigField "String", "CLIENT_SECRET", getPropertyString ("client_secret")
+
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    packagingOptions {
+        exclude 'META-INF/proguard/androidx-annotations.pro'
+    }
+    compileOptions {
+        sourceCompatibility = '1.8'
+        targetCompatibility = '1.8'
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.1.0'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+
+    def room_version = "2.2.0"
+    implementation "androidx.room:room-runtime:$room_version"
+    annotationProcessor "androidx.room:room-compiler:$room_version"
+
+    implementation 'com.google.android.material:material:1.0.0'
+    implementation 'com.google.code.gson:gson:2.8.5'
+    implementation 'com.google.android.gms:play-services-auth:17.0.0'
+
+    implementation 'io.reactivex.rxjava2:rxjava:2.2.10'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.1.0'
+
+    implementation 'com.squareup.picasso:picasso:2.71828'
+
+    def retrofit_version = "2.6.0"
+    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:2.6.2"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofit_version"
+
+
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.14.2'
+
+    implementation 'com.facebook.stetho:stetho:1.5.1'
+
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'androidx.test:runner:1.2.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+}

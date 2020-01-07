@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Camp Out</string>
+    <string name="login_failure_message">Unable to login with provided credentials.</string>
+
+</resources>

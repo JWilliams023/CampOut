@@ -1,0 +1,305 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "8fc6dbbe5b6565980e82472f7c7ccc9c",
+    "entities": [
+      {
+        "tableName": "Customer",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`customer_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `name` TEXT, `cardNumber` INTEGER NOT NULL, `orderCount` INTEGER NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "customerId",
+            "columnName": "customer_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "cardNumber",
+            "columnName": "cardNumber",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "orderCount",
+            "columnName": "orderCount",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "customer_id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [
+          {
+            "name": "index_Customer_name",
+            "unique": false,
+            "columnNames": [
+              "name"
+            ],
+            "createSql": "CREATE  INDEX `index_Customer_name` ON `${TABLE_NAME}` (`name`)"
+          },
+          {
+            "name": "index_Customer_cardNumber",
+            "unique": false,
+            "columnNames": [
+              "cardNumber"
+            ],
+            "createSql": "CREATE  INDEX `index_Customer_cardNumber` ON `${TABLE_NAME}` (`cardNumber`)"
+          },
+          {
+            "name": "index_Customer_orderCount",
+            "unique": false,
+            "columnNames": [
+              "orderCount"
+            ],
+            "createSql": "CREATE  INDEX `index_Customer_orderCount` ON `${TABLE_NAME}` (`orderCount`)"
+          }
+        ],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "Order",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`order_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `customer_id` INTEGER NOT NULL, `drinks` TEXT, `sides` INTEGER NOT NULL, `mainItem` INTEGER NOT NULL, `location_id` INTEGER NOT NULL, FOREIGN KEY(`customer_id`) REFERENCES `Customer`(`customer_id`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`location_id`) REFERENCES `Location`(`location_id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "order_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "customerId",
+            "columnName": "customer_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "drinks",
+            "columnName": "drinks",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "sides",
+            "columnName": "sides",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "mainItem",
+            "columnName": "mainItem",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "locationId",
+            "columnName": "location_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "order_id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [
+          {
+            "name": "index_Order_customer_id",
+            "unique": false,
+            "columnNames": [
+              "customer_id"
+            ],
+            "createSql": "CREATE  INDEX `index_Order_customer_id` ON `${TABLE_NAME}` (`customer_id`)"
+          },
+          {
+            "name": "index_Order_drinks",
+            "unique": false,
+            "columnNames": [
+              "drinks"
+            ],
+            "createSql": "CREATE  INDEX `index_Order_drinks` ON `${TABLE_NAME}` (`drinks`)"
+          },
+          {
+            "name": "index_Order_sides",
+            "unique": false,
+            "columnNames": [
+              "sides"
+            ],
+            "createSql": "CREATE  INDEX `index_Order_sides` ON `${TABLE_NAME}` (`sides`)"
+          },
+          {
+            "name": "index_Order_mainItem",
+            "unique": false,
+            "columnNames": [
+              "mainItem"
+            ],
+            "createSql": "CREATE  INDEX `index_Order_mainItem` ON `${TABLE_NAME}` (`mainItem`)"
+          },
+          {
+            "name": "index_Order_location_id",
+            "unique": false,
+            "columnNames": [
+              "location_id"
+            ],
+            "createSql": "CREATE  INDEX `index_Order_location_id` ON `${TABLE_NAME}` (`location_id`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "Customer",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "customer_id"
+            ],
+            "referencedColumns": [
+              "customer_id"
+            ]
+          },
+          {
+            "table": "Location",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "location_id"
+            ],
+            "referencedColumns": [
+              "location_id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "Location",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`location_id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `address` TEXT, `store` INTEGER NOT NULL, `orderCount` INTEGER NOT NULL, `order_id` INTEGER NOT NULL, `customer_id` INTEGER NOT NULL, FOREIGN KEY(`order_id`) REFERENCES `Order`(`order_id`) ON UPDATE NO ACTION ON DELETE CASCADE , FOREIGN KEY(`customer_id`) REFERENCES `Customer`(`customer_id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "location_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "address",
+            "columnName": "address",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "store",
+            "columnName": "store",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "orderCount",
+            "columnName": "orderCount",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "orderId",
+            "columnName": "order_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "customerId",
+            "columnName": "customer_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "location_id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [
+          {
+            "name": "index_Location_address",
+            "unique": false,
+            "columnNames": [
+              "address"
+            ],
+            "createSql": "CREATE  INDEX `index_Location_address` ON `${TABLE_NAME}` (`address`)"
+          },
+          {
+            "name": "index_Location_store",
+            "unique": false,
+            "columnNames": [
+              "store"
+            ],
+            "createSql": "CREATE  INDEX `index_Location_store` ON `${TABLE_NAME}` (`store`)"
+          },
+          {
+            "name": "index_Location_orderCount",
+            "unique": false,
+            "columnNames": [
+              "orderCount"
+            ],
+            "createSql": "CREATE  INDEX `index_Location_orderCount` ON `${TABLE_NAME}` (`orderCount`)"
+          },
+          {
+            "name": "index_Location_order_id",
+            "unique": false,
+            "columnNames": [
+              "order_id"
+            ],
+            "createSql": "CREATE  INDEX `index_Location_order_id` ON `${TABLE_NAME}` (`order_id`)"
+          },
+          {
+            "name": "index_Location_customer_id",
+            "unique": false,
+            "columnNames": [
+              "customer_id"
+            ],
+            "createSql": "CREATE  INDEX `index_Location_customer_id` ON `${TABLE_NAME}` (`customer_id`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "Order",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "order_id"
+            ],
+            "referencedColumns": [
+              "order_id"
+            ]
+          },
+          {
+            "table": "Customer",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "customer_id"
+            ],
+            "referencedColumns": [
+              "customer_id"
+            ]
+          }
+        ]
+      }
+    ],
+    "views": [],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '8fc6dbbe5b6565980e82472f7c7ccc9c')"
+    ]
+  }
+}
